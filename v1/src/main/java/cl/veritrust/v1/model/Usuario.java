@@ -36,10 +36,6 @@ public class Usuario {
 
     private Date fechaCreacion;
 
-    /**
-     * Campo auxiliar para mapear el JSON del móvil (`fechaNacimiento` como String).
-     * No se persiste directamente: sincroniza con `fechaNac`.
-     */
     @Transient
     @JsonProperty("fechaNacimiento")
     private String fechaNacimiento;
