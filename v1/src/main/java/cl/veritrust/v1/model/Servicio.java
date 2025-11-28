@@ -1,5 +1,7 @@
 package cl.veritrust.v1.model;
+
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,15 @@ public class Servicio {
     private String nombre;
     private String tipo;
     private String descripcion;
-    private Double precio;
+
+    // Android app sends `precio` as Int
+    private Integer precio;
     private Date fechaCreacion;
-    
+
+    // Lista de detalles enviada por la app móvil
+    @ElementCollection
+    @CollectionTable(name = "servicio_detalles", joinColumns = @JoinColumn(name = "servicio_id"))
+    @Column(name = "detalle")
+    private List<String> detalles;
+
 }

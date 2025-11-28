@@ -30,6 +30,7 @@ public class ServicioService {
             servicio.setNombre(servicioDetalles.getNombre());
             servicio.setDescripcion(servicioDetalles.getDescripcion());
             servicio.setPrecio(servicioDetalles.getPrecio());
+            servicio.setDetalles(servicioDetalles.getDetalles());
             return servicioRepository.save(servicio);
         }
         return null;
