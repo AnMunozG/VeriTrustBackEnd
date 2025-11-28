@@ -17,6 +17,7 @@ public class Servicio {
     private Long id;
     private String nombre;
     private String tipo;
+    @Column(columnDefinition = "TEXT")
     private String descripcion;
 
     private Integer precio;
