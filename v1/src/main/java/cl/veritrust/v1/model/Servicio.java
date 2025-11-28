@@ -1,6 +1,5 @@
 package cl.veritrust.v1.model;
 
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -22,7 +21,6 @@ public class Servicio {
 
     // Android app sends `precio` as Int
     private Integer precio;
-    private Date fechaCreacion;
 
     // Lista de detalles enviada por la app móvil
     @ElementCollection
