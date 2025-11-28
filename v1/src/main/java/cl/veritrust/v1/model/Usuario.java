@@ -31,14 +31,8 @@ public class Usuario {
 
     private String telefono;
 
-    // Rol del usuario: "usuario" o "admin"
-    private String rol = "usuario";
-
     // Campo persistente en BD (tipo Date). Seguimos guardando fechaNac en la BD.
     private Date fechaNac;
-
-    // Fecha de creación del registro
-    private Date fechaCreacion;
 
 
     @Transient

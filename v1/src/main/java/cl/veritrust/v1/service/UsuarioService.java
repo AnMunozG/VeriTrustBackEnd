@@ -19,13 +19,6 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElse(null);
     }
     public Usuario createUsuario(Usuario usuario) {
-        // Asignar rol por defecto si no viene
-        if (usuario.getRol() == null || usuario.getRol().isBlank()) {
-            usuario.setRol("usuario");
-        }
-        if (usuario.getFechaCreacion() == null) {
-            usuario.setFechaCreacion(new java.util.Date());
-        }
         return usuarioRepository.save(usuario);
     }
     public Usuario updateUsuario(Long id, Usuario nuevoUsuario) {
@@ -36,7 +29,6 @@ public class UsuarioService {
             usuario.setEmail(nuevoUsuario.getEmail());
             usuario.setContrasena(nuevoUsuario.getContrasena());
             usuario.setTelefono(nuevoUsuario.getTelefono());
-            usuario.setRol(nuevoUsuario.getRol());
             usuario.setFechaNac(nuevoUsuario.getFechaNac());
             return usuarioRepository.save(usuario);
         }
