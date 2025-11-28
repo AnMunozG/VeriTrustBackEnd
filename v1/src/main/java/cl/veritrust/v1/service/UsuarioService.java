@@ -4,6 +4,7 @@ import cl.veritrust.v1.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -37,21 +38,20 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
     public Usuario getUsuarioByEmail(String email) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        for (Usuario usuario : usuarios) {
-            if (usuario.getEmail().equals(email)) {
-                return usuario;
-            }
-        }
-        return null;
+        Optional<Usuario> opt = usuarioRepository.findByEmail(email);
+        return opt.orElse(null);
     }
     public Usuario getUsuarioByRut(String rut) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        for (Usuario usuario : usuarios) {
-            if (usuario.getRut().equals(rut)) {
-                return usuario;
-            }
-        }
-        return null;
+        Optional<Usuario> opt = usuarioRepository.findByRut(rut);
+        return opt.orElse(null);
+    }
+
+    /**
+     * Intento sencillo de login: busca por email y contraseña.
+     * Nota: en producción nunca almacenes contraseñas en texto plano.
+     */
+    public Usuario login(String email, String contrasena) {
+        Optional<Usuario> opt = usuarioRepository.findByEmailAndContrasena(email, contrasena);
+        return opt.orElse(null);
     }
 }
