@@ -21,17 +21,14 @@ public class Usuario {
     private String rut;
     private String nombre;
 
-    // El móvil envía el email con la clave "user". Lo mantenemos mapeado a la columna
     @JsonProperty("user")
     private String email;
 
-    // El móvil envía la contraseña con la clave "password". Lo mantenemos mapeado a la columna
     @JsonProperty("password")
     private String contrasena;
 
     private String telefono;
 
-    // Campo persistente en BD (tipo Date). Seguimos guardando fechaNac en la BD.
     private Date fechaNac;
 
 
@@ -54,7 +51,6 @@ public class Usuario {
             try {
                 this.fechaNac = SDF.parse(fechaNacimiento);
             } catch (ParseException e) {
-                // ignore parse errors; fechaNac stays null
             }
         }
     }

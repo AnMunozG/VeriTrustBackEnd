@@ -31,7 +31,6 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<Usuario> login(@RequestBody Map<String, String> credentials) {
-        // El cliente móvil envía `user` (email) y `password` (contrasena)
         String user = credentials.get("user");
         String password = credentials.get("password");
         if (user == null || password == null) {

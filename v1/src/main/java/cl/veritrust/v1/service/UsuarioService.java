@@ -46,10 +46,6 @@ public class UsuarioService {
         return opt.orElse(null);
     }
 
-    /**
-     * Intento sencillo de login: busca por email y contraseña.
-     * Nota: en producción nunca almacenes contraseñas en texto plano.
-     */
     public Usuario login(String email, String contrasena) {
         Optional<Usuario> opt = usuarioRepository.findByEmailAndContrasena(email, contrasena);
         return opt.orElse(null);
