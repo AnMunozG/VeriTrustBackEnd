@@ -47,7 +47,7 @@ INSERT INTO servicio_detalles (servicio_id, detalle) VALUES
 (4, 'Requiere enrolamiento presencial o remoto'),
 (4, 'Compatibilidad con modelos Safenet 5110/5110+');
 
-INSERT INTO servicio (id, nombre, tipo, descripcion, precio,) VALUES
+INSERT INTO servicio (id, nombre, tipo, descripcion, precio) VALUES
 (5, 'Firma Electrónica Avanzada - Notario', 'Avanzada', 'Firma Electrónica para Notarios, Archiveros, y Conservadores. Es necesario presentar el Certificado de la Corte de Apelaciones. Firma portable, queda almacenada en dispositivo e-token. Documentos Avalados por la Ley con los más altos estándares de seguridad y confidencialidad de la información.', 42990)
 ON DUPLICATE KEY UPDATE nombre=VALUES(nombre);
 

@@ -1,14 +1,12 @@
 package cl.veritrust.v1.model;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -18,9 +16,11 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String rut;
     private String nombre;
 
+    @Column(unique = true)
     @JsonProperty("user")
     private String email;
 
@@ -29,30 +29,42 @@ public class Usuario {
 
     private String telefono;
 
-    private Date fechaNac;
+    // Estos campos ya se guardan bien, solo asegúrate que estén aquí
+    @JsonProperty("region")
+    private String region;
 
+    @JsonProperty("genero")
+    private String genero;
 
-    @Transient
+    // --- ARREGLO DE LA FECHA ---
+    @Temporal(TemporalType.DATE)
+    private Date fechaNac; // Esta es la única variable de fecha real
+
+    // Formateador
+    private static final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
+
+    // "Truco": Creamos métodos 'dummy' para el JSON, sin crear una variable String
+    
+    // ENVIAR AL CELULAR (Date -> String)
     @JsonProperty("fechaNacimiento")
-    private String fechaNacimiento;
-
-    private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
-
-    public String getFechaNacimiento() {
+    public String getFechaNacimientoStr() {
         if (this.fechaNac != null) {
-            return SDF.format(this.fechaNac);
+            try {
+                return SDF.format(this.fechaNac);
+            } catch (Exception e) { return ""; }
         }
-        return this.fechaNacimiento;
+        return "";
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-        if (fechaNacimiento != null && !fechaNacimiento.isBlank()) {
+    // RECIBIR DEL CELULAR (String -> Date)
+    @JsonProperty("fechaNacimiento")
+    public void setFechaNacimientoStr(String fechaStr) {
+        if (fechaStr != null && !fechaStr.trim().isEmpty()) {
             try {
-                this.fechaNac = SDF.parse(fechaNacimiento);
-            } catch (ParseException e) {
+                this.fechaNac = SDF.parse(fechaStr); // Aquí se guarda en la variable real
+            } catch (Exception e) {
+                System.err.println("Error fecha: " + fechaStr);
             }
         }
     }
-
 }
