@@ -1,15 +1,22 @@
 package cl.veritrust.v1.service;
+
 import cl.veritrust.v1.model.Documento;
+import cl.veritrust.v1.model.Usuario;
 import cl.veritrust.v1.repository.DocumentoRepository;
+import cl.veritrust.v1.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class DocumentoService {
+
     @Autowired
     private DocumentoRepository documentoRepository;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<Documento> getAllDocumentos() {
         return documentoRepository.findAll();
@@ -19,32 +26,22 @@ public class DocumentoService {
         return documentoRepository.findById(id).orElse(null);
     }
 
+    // --- GUARDADO INTELIGENTE ---
     public Documento createDocumento(Documento documento) {
-        return documentoRepository.save(documento);
-    }
-
-    public Documento updateDocumento(Long id, Documento documentoDetails) {
-        Documento documento = documentoRepository.findById(id).orElse(null);
-        if (documento != null) {
-            documento.setNombreArchivo(documentoDetails.getNombreArchivo());
-            documento.setFechaFirmado(documentoDetails.getFechaFirmado());
-            documento.setDireccionArchivo(documentoDetails.getDireccionArchivo());
-            return documentoRepository.save(documento);
+        // La App nos manda un usuario que solo trae el email.
+        // Buscamos el ID real en la base de datos.
+        if (documento.getUsuario() != null && documento.getUsuario().getEmail() != null) {
+            Optional<Usuario> usuarioReal = usuarioRepository.findByEmail(documento.getUsuario().getEmail());
+            usuarioReal.ifPresent(documento::setUsuario);
         }
-        return null;
+        return documentoRepository.save(documento);
     }
 
     public void deleteDocumento(Long id) {
         documentoRepository.deleteById(id);
     }
-    public List<Documento> getDocumentosByUsuarioId(Long usuarioId) {
-        List<Documento> allDocumentos = documentoRepository.findAll();
-        List<Documento> userDocumentos = new ArrayList<>();
-        for (Documento documento : allDocumentos) {
-            if (documento.getUsuarioId().equals(usuarioId)) {
-                userDocumentos.add(documento);
-            }
-        }
-        return userDocumentos;
+
+    public List<Documento> getDocumentosByUsuarioEmail(String email) {
+        return documentoRepository.findByUsuarioEmail(email);
     }
 }
