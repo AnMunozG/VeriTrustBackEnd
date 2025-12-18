@@ -9,4 +9,6 @@ import java.util.List;
 public interface DocumentoRepository extends JpaRepository<Documento, Long> {
     // Busca documentos filtrando por el email del usuario dueño
     List<Documento> findByUsuarioEmail(String email);
+    // ⭐ NUEVO: Elimina todos los documentos asociados a un usuario por su ID
+    void deleteAllByUsuarioId(Long usuarioId);
 }

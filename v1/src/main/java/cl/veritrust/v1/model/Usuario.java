@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+// v1/src/main/java/cl/veritrust/v1/model/Usuario.java
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,24 +30,23 @@ public class Usuario {
     private String contrasena;
 
     private String telefono;
-
-    // Estos campos ya se guardan bien, solo asegúrate que estén aquí
+    
     @JsonProperty("region")
     private String region;
 
     @JsonProperty("genero")
     private String genero;
 
-    // --- ARREGLO DE LA FECHA ---
     @Temporal(TemporalType.DATE)
-    private Date fechaNac; // Esta es la única variable de fecha real
+    private Date fechaNac;
 
-    // Formateador
+    // ⭐ NUEVO: Campo de rol con valor por defecto
+    @Column(nullable = false)
+    private String rol = "user"; // Por defecto todos son 'user'
+
+    // Métodos de fecha (mantener los existentes)
     private static final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
 
-    // "Truco": Creamos métodos 'dummy' para el JSON, sin crear una variable String
-    
-    // ENVIAR AL CELULAR (Date -> String)
     @JsonProperty("fechaNacimiento")
     public String getFechaNacimientoStr() {
         if (this.fechaNac != null) {
@@ -56,12 +57,11 @@ public class Usuario {
         return "";
     }
 
-    // RECIBIR DEL CELULAR (String -> Date)
     @JsonProperty("fechaNacimiento")
     public void setFechaNacimientoStr(String fechaStr) {
         if (fechaStr != null && !fechaStr.trim().isEmpty()) {
             try {
-                this.fechaNac = SDF.parse(fechaStr); // Aquí se guarda en la variable real
+                this.fechaNac = SDF.parse(fechaStr);
             } catch (Exception e) {
                 System.err.println("Error fecha: " + fechaStr);
             }
